@@ -6,12 +6,12 @@ require 'net/http'
 # CITY_ID = 2345889
 
 # options: metric / imperial
-UNITS   = 'metric'
+#  UNITS   = 'metric'
 
 # create free account on open weather map to get API key
 
 # API_KEY = ENV['YOUR-AUTHOLIZED-KEY']
-  API_KEY = 'd1185e03748c9212756c163633c2c2ce'
+#  API_KEY = 'd1185e03748c9212756c163633c2c2ce'
 
 SCHEDULER.every '600s', :first_in => 0 do |job|
 
@@ -24,30 +24,33 @@ SCHEDULER.every '600s', :first_in => 0 do |job|
 
   next unless '200'.eql? response.code
 
-  print '============================'
-  print response.body
-  print '============================'
+#  print '============================'
+#  print response.body
+#  print '============================'
   
   
   weather_data  = JSON.parse(response.body)
   detailed_info = weather_data['weather'].first
   current_temp  = weather_data['main']['temp']
+  feels_temp    = weather_data['main']['feels_like']
 
   print '@@@@@'
   print weather_data['main']['temp']
   print weather_data['name']
-  print weather_data['main']['temp_min']
-  
+  print weather_data['main']['feels_like']
   print '@@@@@'
 
-  
   print #{keys}
+  print '@@@@@'
+  print #{values}
   siterb = #{keys}
+  print '@@@@@'
   
   #小数点２位まで表示させる
   #&deg はhtmlで温度表示の小さい丸
   #
   send_event(siterb , { :temp => "#{current_temp}.to_f &deg;#{temperature_units}",
+                        :feels_temp => "#{feels_temp}.to_f &deg;#{temperature_units}",
                           :condition => detailed_info['main'],
                           :title => "#{weather_data['name']}",
                           :color => color_temperature(current_temp),
