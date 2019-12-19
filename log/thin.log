@@ -1,0 +1,14 @@
+Writing PID to tmp/pids/thin.pid
+Thin web server (v1.7.2 codename Bachmanity)
+Maximum connections set to 1024
+Listening on 0.0.0.0:3030, CTRL+C to stop
+[33mFor the twitter widget to work, you need to put in your twitter API keys in the jobs/twitter.rb file.[0m
+127.0.0.1 - - [16/Dec/2019:16:01:03 +0900] "GET /sample HTTP/1.1" 200 2310 0.0851
+127.0.0.1 - - [16/Dec/2019:16:02:06 +0900] "GET /views/text.html HTTP/1.1" 200 175 0.0205
+127.0.0.1 - - [16/Dec/2019:16:02:06 +0900] "GET /views/weather.html HTTP/1.1" 200 202 0.0012
+127.0.0.1 - - [16/Dec/2019:16:02:06 +0900] "GET /views/list.html HTTP/1.1" 200 493 0.0226
+127.0.0.1 - - [16/Dec/2019:16:02:06 +0900] "GET /views/number.html HTTP/1.1" 200 343 0.0033
+127.0.0.1 - - [16/Dec/2019:16:02:06 +0900] "GET /views/graph.html HTTP/1.1" 200 183 0.0108
+127.0.0.1 - - [16/Dec/2019:16:06:16 +0900] "GET /events HTTP/1.1" 200 - 250.1563
+Waiting for 1 connection(s) to finish, can take up to 30 sec, CTRL+C to stop now
+Exiting!

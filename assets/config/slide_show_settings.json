@@ -1,0 +1,1 @@
+{"SlideShow":{"directory":"/mnt/images/Public TV","pattern":"**/*.{jpg,JPG,gif,GIF,png,PNG}","maxImageSize":[1920,1080],"quality":50,"subDirectoryExceptions":["very bad party","personal employee pictures","something very private"]}}
