@@ -32,11 +32,22 @@ SCHEDULER.every '600s', :first_in => 0 do |job|
   weather_data  = JSON.parse(response.body)
   detailed_info = weather_data['weather'].first
   current_temp  = weather_data['main']['temp']
+
+  print '@@@@@'
+  print weather_data['main']['temp']
+  print weather_data['name']
+  print weather_data['main']['temp_min']
+  
+  print '@@@@@'
+
   
   print #{keys}
   siterb = #{keys}
-    
-  send_event(siterb , { :temp => "#{current_temp} &deg;#{temperature_units}",
+  
+  #小数点２位まで表示させる
+  #&deg はhtmlで温度表示の小さい丸
+  #
+  send_event(siterb , { :temp => "#{current_temp}.to_f &deg;#{temperature_units}",
                           :condition => detailed_info['main'],
                           :title => "#{weather_data['name']}",
                           :color => color_temperature(current_temp),
