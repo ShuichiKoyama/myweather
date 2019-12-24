@@ -4,6 +4,8 @@ class Dashing.WeatherNdc extends Dashing.Widget
     # This is fired when the widget is done being rendered
 
   onData: (data) ->
-    # Handle incoming data
-    # You can access the html node of this widget with `@node`
-    # Example: $(@node).fadeOut().fadeIn() will make the node flash each time data comes in.
+    if data.climacon
+      # reset classes
+      $('i.climacon').attr 'class', "climacon icon-background #{data.climacon}"
+    if data.color
+      $(@node).css('background-color', data.color)
