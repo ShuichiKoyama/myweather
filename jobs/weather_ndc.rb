@@ -31,42 +31,48 @@ SCHEDULER.every '600s', :first_in => 0 do |job|
 
   
   weather_data  = JSON.parse(response.body)
-#  detailed_info = weather_data['weather'].first
-#  current_temp  = weather_data['main']['temp']
+  detailed_info = weather_data['list'][0]['weather'][0]['icon']
+  current_temp  = weather_data['list'][0]['main']['temp']
 #  feels_temp    = weather_data['main']['feels_like']
 
 #  p '@@@@@'
+#  p weather_data
 #  p weather_data['list'][1]['dt_text']
 #  p '#####'
 #  p weather_data['list'][0]['main']['temp']
 #  p '@@@@@'
 
   aryW1 = []
-  table_data = "<table><tr><th>日時</th><th>天気予想</th><th>気温</th></tr>"
-  aryW1 << table_data
-  weather_data.each do |n| 
-      aryW1 << "<td>"
-      aryW1 << weather_data['list'][0]['dt_text']
-      aryW1 << "</td><td>"
-      aryW1 << weather_data['list'][0]['weather'][0]['description']
-      aryW1 << "</td><td>"
-      aryW1 << weather_data['list'][0]['main']['temp']
-      aryW1 << "</td>"
+  aryW2 = []
+  aryW3 = []
+  aryW4 = []
+  hrows = [
+    { cols: [ {value: '日時'},{value: '予想'},[value:'気温'}]
+  rows = []  
+
+#  weather_data['list'].each do |num| 
+   (1..24).each do |num| 
+      aryW1 << weather_data['list'][num]['dt_txt'].slice(8,2)
+      aryW1 << "日 "
+      aryW2 << weather_data['list'][num]['dt_txt'].slice(11,5)
+      aryW2 << "&nbsp"
+      aryW3 << weather_data['list'][num]['weather'][0]['description']
+      aryW3 << "&nbsp"
+      aryW4 << weather_data['list'][num]['main']['temp'] 
+      aryW4 << "°C "
   end 
-  aryW1 << "</tr></table>"
-  tbForecast = aryW1.join
-
-  p tbForecast
-
-# "<% weather_data.each do |lists| %>"&
-# "<td><% weather_data['list'][0]['dt_text'] %></td>"&
-# "<td><% weather_data['list'][0]['weather']['description'] %></td>"&
-#  "</tr><% end %></table>"
+#  aryW1 << aryW2
+#  aryW1 << aryW3
+#  aryW1 << aryW4
+#  tbForecast = aryW1.join
+#  p tbForecast
 
   #小数点２位まで表示させる
   #&deg はhtmlで温度表示の小さい丸
   #
-  send_event( 'weather_ndc' , { :tbForecast => "#{tbForecast}"})
+  send_event( 'weather_ndc' , { :tbForecast => "#{tbForecast}",
+                          :color => color_temperature(current_temp),
+                          :climacon => climacon_class(detailed_info['id'])})
 
   #send_event(siterb , { :temp => "#{current_temp}.to_f &deg;#{temperature_units}",
   #                        :condition => detailed_info['main'],
