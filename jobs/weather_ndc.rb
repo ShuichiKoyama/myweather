@@ -33,7 +33,6 @@ SCHEDULER.every '600s', :first_in => 0 do |job|
   weather_data  = JSON.parse(response.body)
   detailed_info = weather_data['list'][0]['weather'][0]['icon']
   current_temp  = weather_data['list'][0]['main']['temp']
-#  feels_temp    = weather_data['main']['feels_like']
 
 #  p '@@@@@'
 #  p weather_data
@@ -41,38 +40,55 @@ SCHEDULER.every '600s', :first_in => 0 do |job|
 #  p '#####'
 #  p weather_data['list'][0]['main']['temp']
 #  p '@@@@@'
-
+#### json形式のデータから、配列に 
   aryW1 = []
   aryW2 = []
   aryW3 = []
   aryW4 = []
-  hrows = [
-    { cols: [ {value: '日時'},{value: '予想'},[value:'気温'}]
-  rows = []  
+  aryW5 = []
 
-#  weather_data['list'].each do |num| 
+  #  weather_data['list'].each do |num| 
    (1..24).each do |num| 
+# 日付
       aryW1 << weather_data['list'][num]['dt_txt'].slice(8,2)
-      aryW1 << "日 "
+# 時間帯
       aryW2 << weather_data['list'][num]['dt_txt'].slice(11,5)
-      aryW2 << "&nbsp"
+# 天気予報
       aryW3 << weather_data['list'][num]['weather'][0]['description']
-      aryW3 << "&nbsp"
+# 気温
       aryW4 << weather_data['list'][num]['main']['temp'] 
       aryW4 << "°C "
-  end 
+# 体感気温
+      aryW5 << weather_data['list'][num]['main']['feels_like'] 
+      aryW5 << "°C "
+end 
 #  aryW1 << aryW2
 #  aryW1 << aryW3
 #  aryW1 << aryW4
 #  tbForecast = aryW1.join
 #  p tbForecast
 
-  #小数点２位まで表示させる
-  #&deg はhtmlで温度表示の小さい丸
-  #
-  send_event( 'weather_ndc' , { :tbForecast => "#{tbForecast}",
-                          :color => color_temperature(current_temp),
-                          :climacon => climacon_class(detailed_info['id'])})
+### テーブル出力レイアウトへ編集
+
+hrows = [
+  { cols: [ {value: '日付'}, {value: '時間'}, {value: '天気'}, {value: '気温'}, {value: '体感'} ]
+
+rows = [
+    { cols: [ {value: 'cell11'}, {value: 'cell12'}, {value: 'cell13'}, {value: 'cell14'}, {value: 'cell15'} ]},
+    { cols: [ {value: 'cell21'}, {value: 'cell22'}, {value: 'cell23'}, {value: 'cell24'}, {value: 'cell25'} ]},
+    { cols: [ {value: 'cell31'}, {value: 'cell32'}, {value: 'cell33'}, {value: 'cell34'}, {value: 'cell35'} ]},
+    { cols: [ {value: 'cell41'}, {value: 'cell42'}, {value: 'cell43'}, {value: 'cell44'}, {value: 'cell45'} ]}
+]
+
+  send_event( 'my_table' , { hrows: hrows , rows: rows })
+
+  
+ #小数点２位まで表示させる
+ #&deg はhtmlで温度表示の小さい丸
+ #
+ # send_event( 'weather_ndc' , { :tbForecast => "#{tbForecast}",
+ #                           :color => color_temperature(current_temp),
+ #                         :climacon => climacon_class(detailed_info['id'])})
 
   #send_event(siterb , { :temp => "#{current_temp}.to_f &deg;#{temperature_units}",
   #                        :condition => detailed_info['main'],
